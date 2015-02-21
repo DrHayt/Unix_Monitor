@@ -39,7 +39,16 @@ eval {
 
 };
 
-my $The_Monitor=$real_monitor->new(@ARGV);
+
+my $params;
+foreach my $arg (@ARGV){
+    my ($key,$value)=split(/=/,$arg);
+    $params->{$key}=$value;
+}
+#print(Dumper(%params));
+
+
+my $The_Monitor=$real_monitor->new( $params );
 
 while(1){
     my $t0=gettimeofday();

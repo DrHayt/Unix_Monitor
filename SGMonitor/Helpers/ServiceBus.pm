@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::Helpers::servicebus;
+package SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use LWP::UserAgent;
 use Time::HiRes qw(gettimeofday);
@@ -9,6 +9,8 @@ use JSON;
 sub new(){
     my ($class,$args)=@_;
     my $self = {};
+
+    #print("SGMonitor::Helpers::servicebus: ".Dumper($args));
 
     $self->{URL}=$args->{url} || 'http://servicebus/Execute.svc/Execute';
     $self->{TIMEOUT}=$args->{timeout} || 10;
