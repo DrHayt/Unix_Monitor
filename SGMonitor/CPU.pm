@@ -2,7 +2,6 @@ use strict;
 use warnings;
 package SGMonitor::CPU;
 use Net::Statsd;
-use Data::Dumper;
 use Sys::Hostname;
 use SGMonitor::Helpers::cpu_stats;
 
@@ -12,6 +11,7 @@ sub new(){
 
     #  Get an initial copy of the data.
     $self->{CPU_STATS}=SGMonitor::Helpers::cpu_stats->new();
+    sleep(1);
 
     $self->{host}=hostname;
     $self->{host}=~ s/\./_/g;
@@ -23,10 +23,15 @@ sub new(){
 sub run(){
     my $self=shift;
     $self->{CPU_STATS}->refresh_stats();
-    foreach my $stat (qw(user system nice idle iowait irq softirq)){
-        print("Sending $stat\n");
+    foreach my $stat ($self->{CPU_STATS}->get_stat_types()){
+        #printf("Sending %s on host %s \n",$stat,$self->{host});
+        $self->send_cpustat(
+                    $stat,
+                    $self->{CPU_STATS}->get_stat($stat),
+                    $self->{CPU_STATS}->get_stat('total'),
+                    $self->{host}
+                    );
     }
-    #&send_cpustat($self->{CPU_STATS}->get_stat(
 }
 
 sub send_cpustat($$$$){
@@ -35,8 +40,13 @@ sub send_cpustat($$$$){
 	my $used=shift;
 	my $total=shift;
 	my $host=shift;
+
+        #printf("Name is %s, used is %s, total is %s, host is %s\n",$name,$used,$total,$host);
+
 	my $send_name='system.' . $host .'.cpu.' . $name;
-	Net::Statsd::gauge($send_name, (($used/$total)*100));
+	my $value=(($used/$total)*100);
+	printf("Sending %s, with Value %s\n",$send_name,$value);
+	#Net::Statsd::gauge($send_name, (($used/$total)*100));
 	
 }
 

@@ -26,24 +26,23 @@ eval {
     require $thing_to_require;
     1;
 } or do {
-    my $error = $@;
-    print("I got some fucking error: " . $@ . "\n");
     # Module load failed. You could recover, try loading
     # an alternate module, die with $error...
     # whatever's appropriate
+    my $error = $@;
+    print(STDERR "Received error message:" . $@ . "\n");
+    die("Unable to load module $real_monitor derived from $monitor");
+
 };
-
-
-printf("monitor is $monitor\n");
 
 my $The_Monitor=$real_monitor->new(@ARGV);
 
 while(1){
     $The_Monitor->run();
-    sleep(1);
+    sleep(3);
 }
 
 sub usage(){
-    print(STDERR "Arg length is ".$#ARGV."\n");
-    die "Fuck off";
+    print(STDERR "This program requires 1 argument which is the name of a monitor to run.\n");
+    die("\t$0 <Monitor To Run>");
 }
