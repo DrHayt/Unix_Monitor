@@ -45,8 +45,8 @@ sub send_cpustat($$$$){
 
 	my $send_name='system.' . $host .'.cpu.' . $name;
 	my $value=(($used/$total)*100);
-	printf("Sending %s, with Value %s\n",$send_name,$value);
-	#Net::Statsd::gauge($send_name, (($used/$total)*100));
+	#printf("Sending %s, with Value %s\n",$send_name,$value);
+	Net::Statsd::gauge($send_name, (($used/$total)*100));
 	
 }
 

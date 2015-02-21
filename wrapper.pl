@@ -2,8 +2,12 @@
 use strict;
 use warnings;
 use Data::Dumper;
+use Time::HiRes qw(gettimeofday usleep);
 
 use lib $ENV{'HOME'}."/perl5";
+
+
+my $interval=3;
 
 
 my $CLASS_BASE ="SGMonitor";
@@ -38,8 +42,17 @@ eval {
 my $The_Monitor=$real_monitor->new(@ARGV);
 
 while(1){
+    my $t0=gettimeofday();
     $The_Monitor->run();
-    sleep(3);
+    my $t1=gettimeofday();
+
+    my $elapsed=$t1-$t0;
+
+    my $remaining=$interval - $elapsed;
+
+    if ($remaining >0){
+        usleep($remaining*1000000);
+    }
 }
 
 sub usage(){
