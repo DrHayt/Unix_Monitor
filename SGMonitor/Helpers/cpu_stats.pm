@@ -7,26 +7,16 @@ sub new(){
     my $class=shift;
     my $self = {};
 
-
     $self->{STAT_FILE}="/proc/stat";
 
-
     open(STATS, $self->{STAT_FILE});
-    $self->{STAT_LINE}=<STATS>;
-    chomp($self->{STAT_LINE});
+        $self->{STAT_LINE}=<STATS>;
+        chomp($self->{STAT_LINE});
     close(STATS);
 
     my @tmparray=split(/ /,$self->{STAT_LINE});
 
-    push(@{$self->{stat_types}},'user');
-    push(@{$self->{stat_types}},'nice');
-    push(@{$self->{stat_types}},'system');
-    push(@{$self->{stat_types}},'idle');
-    push(@{$self->{stat_types}},'iowait');
-    push(@{$self->{stat_types}},'irq');
-    push(@{$self->{stat_types}},'softirq');
-    push(@{$self->{stat_types}},'total');
-
+    @{$self->{stat_types}}=qw(user nice system idle iowait irq softirq total);
 
     $self->{oldstats}{user}   =$tmparray[2];
     $self->{oldstats}{nice}   =$tmparray[3];
@@ -54,6 +44,9 @@ sub new(){
     $self->{irq}=0;
     $self->{softirq}=0;
     $self->{total}=0;
+
+    #  Must make sure we are protected.
+    sleep(1);
 
     return(bless($self,$class));
 }
