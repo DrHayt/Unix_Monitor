@@ -70,8 +70,7 @@ sub call($$){
         if ($self->{DEBUG}){
             $self->trace_log($id,
                             'call_object',
-                            caller,
-                            "foo",
+                            scalar(caller),
                             "ARGS:  method:\"$method\", encode_params: ".$encoded_params);
         }
 
@@ -133,6 +132,11 @@ sub call($$){
                             );
             return($elapsed,"CALL_ERROR",$native_object->{error});
         }
+        $self->trace_log($id,
+                        'call',
+                        scalar(caller),
+                        "Success: ". $self->{ENCODER}->encode($native_object->{result})
+                        );
         return($elapsed,"SUCCESS",$native_object->{result});
 }
 
