@@ -88,8 +88,18 @@ sub call($$){
 
         my $elapsed=($t1-$t0);
 
-        if ( ! $response->is_success) {
-            return($elapsed,"INVALID_RESPONSE",$response->decoded_content());
+        if ( ($response->code eq 302 ) || ($response->code eq 301 ) ) {
+            #print(Dumper($response));
+            return($elapsed,"REDIRECT","Unexpected Redirect response: ".$response->code);
+        }
+
+        if ( ! ($response->code eq 200 ))  {
+            #print(Dumper($response));
+            return($elapsed,"INVALID_RESPONSE",
+                    "HTTP Code: " . 
+                    $response->code() . 
+                    " Decoded Content: " . 
+                    $response->decoded_content());
         }
 
 	my $response_content  = $response->decoded_content();

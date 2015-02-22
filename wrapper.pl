@@ -7,7 +7,7 @@ use Time::HiRes qw(gettimeofday usleep);
 use lib $ENV{'HOME'}."/perl5";
 
 
-my $interval=3;
+my $interval=1;
 
 
 my $CLASS_BASE ="SGMonitor";

@@ -23,9 +23,9 @@ sub run(){
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object("ContentService.List",\%params);
     if( $status eq "SUCCESS"){
-        print("Yay, successful call took $elapsed seconds\n");
+        print("$status: Order #$ordernumber took $elapsed seconds\n");
     } else {
-        print("boo, failed call of type $status took $elapsed seconds with body $extra\n");
+        print("$status: Order #$ordernumber took $elapsed seconds with body $extra\n");
     }
 }
 
