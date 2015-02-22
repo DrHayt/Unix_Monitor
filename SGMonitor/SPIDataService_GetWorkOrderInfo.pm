@@ -31,11 +31,11 @@ sub run(){
 
     Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
 
-    if( $status eq "SUCCESS"){
-        print("$status: Order #$ordernumber took $elapsed seconds\n");
-    } else {
-        print("$status: Order #$ordernumber took $elapsed seconds with body ".Dumper($extra)."\n");
-    }
+    #if( $status eq "SUCCESS"){
+    #    print("$status: Order #$ordernumber took $elapsed seconds\n");
+    #} else {
+    #    print("$status: Order #$ordernumber took $elapsed seconds with body ".Dumper($extra)."\n");
+    #}
 }
 
 
