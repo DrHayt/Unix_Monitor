@@ -10,8 +10,7 @@ sub new(){
     my ($class,$args)=@_;
     my $self = {};
 
-    #print("SGMonitor::Helpers::servicebus: ".Dumper($args));
-
+    $self->{DEBUG} = $args->{DEBUG} || 0;
     $self->{URL}=$args->{url} || 'http://servicebus/Execute.svc/Execute';
     $self->{TIMEOUT}=$args->{timeout} || 10;
 
@@ -30,13 +29,20 @@ sub call_object($\%){
         my $method=shift;
         my $params_obj=shift;
 
+        my $id=rand(time());
+
+
         my $encoded_params=$self->{ENCODER}->encode($params_obj);
 
-        #print(Dumper($params_obj));
-        #print(Dumper($encoded_params));
-        #exit(1);
+        if ($self->{DEBUG}){
+            $self->trace_log($id,
+                            'call_object',
+                            scalar(caller),
+                            "ARGS:  method:\"$method\", params_obj: ".$self->{ENCODER}->encode($params_obj)
+                            );
+        }
 
-        my ($elapsed,$status,$extra)=$self->call($method,$encoded_params);
+        my ($elapsed,$status,$extra)=$self->call($method,$encoded_params,$id);
 
         return($elapsed,$status,$extra);
 
@@ -46,19 +52,7 @@ sub call($$){
         my $self=shift;
 	my $method=shift;
 	my $encoded_params=shift;
-
-	my $id=rand(time());
-
-
-#my $content=qq({
-        #"jsonrpc" : "2.0",
-        #"method" : "ContentService.List",
-        #"id" : "$id",
-        #"params" : {
-                    #"orderId" : "$ORDERNUMBER"
-                    #},
-#});
-
+	my $id=shift || rand(time());
 
         my $content=qq({
           "jsonrpc" : "2.0",
@@ -73,7 +67,13 @@ sub call($$){
 
 	$t0=gettimeofday();
 
-        #print($content."\n");
+        if ($self->{DEBUG}){
+            $self->trace_log($id,
+                            'call_object',
+                            caller,
+                            "foo",
+                            "ARGS:  method:\"$method\", encode_params: ".$encoded_params);
+        }
 
 
         my $response;
@@ -89,12 +89,18 @@ sub call($$){
         my $elapsed=($t1-$t0);
 
         if ( ($response->code eq 302 ) || ($response->code eq 301 ) ) {
-            #print(Dumper($response));
+            $self->trace_log($id,
+                            'call_object',
+                            scalar(caller),
+                            "Redirect: ".$response->code);
             return($elapsed,"REDIRECT","Unexpected Redirect response: ".$response->code);
         }
 
         if ( ! ($response->code eq 200 ))  {
-            #print(Dumper($response));
+            $self->trace_log($id,
+                            'call_object',
+                            scalar(caller),
+                            "Bad Response: ".$response->code );
             return($elapsed,"INVALID_RESPONSE",
                     "HTTP Code: " . 
                     $response->code() . 
@@ -112,13 +118,35 @@ sub call($$){
         eval { 
             $native_object=$self->{ENCODER}->decode($response_content);
             } or do {
+            $self->trace_log($id,
+                            'call',
+                            scalar(caller),
+                            "Decode Failed: ".$response->content);
             return($elapsed,"FAILED_DECODE",$@."\n\n".$response_content);
         };
 
         if(exists($native_object->{error})){
+            $self->trace_log($id,
+                            'call',
+                            scalar(caller),
+                            "Call Failed Failed: ". $self->{ENCODER}->encode($native_object->{error})
+                            );
             return($elapsed,"CALL_ERROR",$native_object->{error});
         }
         return($elapsed,"SUCCESS",$native_object->{result});
 }
+
+sub trace_log($$$$){
+            my $self=shift;
+            my $id=shift;
+            my $method = shift;
+            my $caller = shift;
+            my $logmsg = shift;
+            #print("$id: Method is \"$method\", caller is \"$caller\", logmsg is \"$logmsg\"\n");
+            print($id . " -- " . caller() ."::".$method." called by \n");
+            print($id . " -- \t" .$caller."\n");
+            print($id . " -- \t\t".$logmsg."\n");
+}
+
 
 1;
