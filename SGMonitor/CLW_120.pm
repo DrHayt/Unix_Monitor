@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::CLW_115;
+package SGMonitor::CLW_120;
 use SGMonitor::Helpers::CLW;
 use Data::Dumper;
 use Net::Statsd;
@@ -16,7 +16,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="WD115";
+    $self->{SERVICE_NAME}="WD120";
     $self->{BASE_STRING}="SPI.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
@@ -28,7 +28,7 @@ sub run(){
     my $range=5000000;
     my $ordernumber=int(rand($range))+$start;
 
-    my %params=( 'workordernumber' => $ordernumber 
+    my %params=( 'WorkOrderNumber' => $ordernumber 
                 );
                 #,'IgnoreSPI' => JSON::false );
 
