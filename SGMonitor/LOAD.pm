@@ -6,7 +6,7 @@ use Sys::Hostname;
 use SGMonitor::Helpers::unix_load;
 
 sub new(){
-    my $class=shift;
+    my ($class,$args)=@_;
     my $self = {};
 
     #  Get an initial copy of the data.
