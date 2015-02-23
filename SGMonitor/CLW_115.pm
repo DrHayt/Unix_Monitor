@@ -1,0 +1,42 @@
+use strict;
+use warnings;
+package SGMonitor::CLW_115;
+use SGMonitor::Helpers::CLW;
+use Data::Dumper;
+use Net::Statsd;
+use Sys::Hostname;
+
+sub new(){
+    my ($class,$args)=@_;
+    my $self = {};
+
+    $self->{SB}=SGMonitor::Helpers::CLW->new( $args );
+    $self->{host}=hostname();
+    $self->{host}=~ s/\./_/g;
+
+    $self->{DEBUG} = $args->{DEBUG} || 0;
+
+    $self->{SERVICE_NAME}="WD115";
+    $self->{BASE_STRING}="SPI.monitor." . uc($self->{SERVICE_NAME});
+
+    return(bless($self,$class));
+}
+
+sub run(){
+    my $self=shift;
+    my $start=100100100;
+    my $range=5000000;
+    my $propertyid=int(rand($range))+$start;
+
+    my %params=( 'workordernumber' => $propertyid 
+                );
+                #,'IgnoreSPI' => JSON::false );
+
+    my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
+
+    Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
+
+}
+
+
+1;
