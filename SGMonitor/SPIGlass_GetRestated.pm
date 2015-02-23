@@ -33,18 +33,9 @@ sub run(){
                 #,'IgnoreSPI' => JSON::false );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
-    #my ($elapsed,$status,$extra)=$self->{SB}->call_object("SPIGlass.GetWorkOrderInfo",\%params);
 
     Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
 
-    #if ($self->{DEBUG}){
-        #print("$status: Order #$ordernumber took $elapsed seconds Extra: ". Dumper($extra) . "\n");
-    #}
-    #if( $status eq "SUCCESS"){
-        #print("$status: Order #$ordernumber took $elapsed seconds\n");
-    #} else {
-        #print("$status: Order #$ordernumber took $elapsed seconds with body $extra\n");
-    #}
 }
 
 

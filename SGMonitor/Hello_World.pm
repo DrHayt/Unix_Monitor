@@ -5,6 +5,7 @@ package SGMonitor::Hello_World;
 sub new(){
     my $class=shift;
     my $self = {};
+    $self->{DEBUG} = $args->{DEBUG} || 0;
 
     return(bless($self,$class));
 }

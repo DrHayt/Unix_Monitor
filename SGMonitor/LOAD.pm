@@ -10,6 +10,7 @@ sub new(){
     my $self = {};
 
     #  Get an initial copy of the data.
+    $self->{DEBUG} = $args->{DEBUG} || 0;
     $self->{STATS}=SGMonitor::Helpers::unix_load->new();
     $self->{host}=hostname;
     $self->{host}=~ s/\./_/g;

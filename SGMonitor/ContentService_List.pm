@@ -15,7 +15,8 @@ sub new(){
     $self->{host}=~ s/\./_/g;
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{BASE_STRING}="ServiceBus.monitor.CONTENTSERVICE.LIST";
+    $self->{SERVICE_NAME}="ContentService.List";
+    $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
 }
@@ -28,18 +29,10 @@ sub run(){
 
     my %params=( 'orderId' => $ordernumber );
 
-    my ($elapsed,$status,$extra)=$self->{SB}->call_object("ContentService.List",\%params);
+    my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
     Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
 
-    if ($self->{DEBUG}){
-        print("$status: Order #$ordernumber took $elapsed seconds Extra: ". Dumper($extra) . "\n");
-    }
-    #if( $status eq "SUCCESS"){
-        #print("$status: Order #$ordernumber took $elapsed seconds\n");
-    #} else {
-        #print("$status: Order #$ordernumber took $elapsed seconds with body $extra\n");
-    #}
 }
 
 

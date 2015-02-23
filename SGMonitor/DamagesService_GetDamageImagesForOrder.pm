@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::DamagesService_GetInspectionDamagesForSPI;
+package SGMonitor::DamagesService_GetDamageImagesForOrder;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use Net::Statsd;
@@ -16,7 +16,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="DamagesService.GetInspectionDamagesForSPI";
+    $self->{SERVICE_NAME}="DamagesService.GetDamageImagesForOrder";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
@@ -29,7 +29,7 @@ sub run(){
     my $ordernumber=int(rand($range))+$start;
 
     my %params=( 'ORDERNUMBER' => $ordernumber 
-                ,'SB_DEBUG' => 0 );
+                );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
