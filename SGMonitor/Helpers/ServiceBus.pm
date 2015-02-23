@@ -34,13 +34,11 @@ sub call_object($\%){
 
         my $encoded_params=$self->{ENCODER}->encode($params_obj);
 
-        if ($self->{DEBUG}){
-            $self->trace_log($id,
-                            'call_object',
-                            scalar(caller),
-                            "ARGS:  method:\"$method\", params_obj: ".$self->{ENCODER}->encode($params_obj)
-                            );
-        }
+        $self->trace_log($id,
+                        'call_object',
+                        scalar(caller),
+                        "ARGS:  method:\"$method\", params_obj: ".$self->{ENCODER}->encode($params_obj)
+                        );
 
         my ($elapsed,$status,$extra)=$self->call($method,$encoded_params,$id);
 
@@ -67,12 +65,10 @@ sub call($$){
 
 	$t0=gettimeofday();
 
-        if ($self->{DEBUG}){
-            $self->trace_log($id,
-                            'call_object',
-                            scalar(caller),
-                            "ARGS:  method:\"$method\", encode_params: ".$encoded_params);
-        }
+        $self->trace_log($id,
+                        'call_object',
+                        scalar(caller),
+                        "ARGS:  method:\"$method\", encode_params: ".$encoded_params);
 
 
         my $response;
@@ -146,10 +142,11 @@ sub trace_log($$$$){
             my $method = shift;
             my $caller = shift;
             my $logmsg = shift;
-            #print("$id: Method is \"$method\", caller is \"$caller\", logmsg is \"$logmsg\"\n");
-            print($id . " -- " . caller() ."::".$method." called by \n");
-            print($id . " -- \t" .$caller."\n");
-            print($id . " -- \t\t".$logmsg."\n");
+            if ($self->{DEBUG}){
+                print($id . " -- " . caller() ."::".$method." called by \n");
+                print($id . " -- \t" .$caller."\n");
+                print($id . " -- \t\t".$logmsg."\n");
+            }
 }
 
 
