@@ -38,10 +38,6 @@ sub call_object($\%){
         my $encoded_params;
 
 
-        if($self->{DEBUG}){
-            print($self->{ENCODER}->encode($params_obj)."\n");
-        }
-
         foreach my $key (keys %{$params_obj}){
             my $string=$key."=".$params_obj->{$key};
             push(@params,$string);
@@ -50,13 +46,11 @@ sub call_object($\%){
         $encoded_params=join('&',@params);
         $encoded_params='app='.$method.'&'.$encoded_params;
 
-        if ($self->{DEBUG}){
-            $self->trace_log($id,
-                            'call_object',
-                            scalar(caller),
-                            "ARGS:  method:\"$method\", params_obj: ".$encoded_params
-                            );
-        }
+        $self->trace_log($id,
+                        'call_object',
+                        scalar(caller),
+                        "ARGS:  method:\"$method\", params_obj: ".$encoded_params
+                        );
 
         my ($elapsed,$status,$extra)=$self->call($method,$encoded_params,$id);
 
@@ -75,13 +69,11 @@ sub call($$$){
 
 	$t0=gettimeofday();
 
-        if ($self->{DEBUG}){
-            $self->trace_log($id,
-                            'call',
-                            scalar(caller),
-                            "ARGS:  method:\"$service\", encoded_params: ".$encoded_params);
-        }
-
+        $self->trace_log($id,
+                        'call',
+                        scalar(caller),
+                        "ARGS:  method:\"$service\", encoded_params: ".$encoded_params
+                        );
 
         my $response;
 
@@ -143,10 +135,11 @@ sub trace_log($$$$){
             my $method = shift;
             my $caller = shift;
             my $logmsg = shift;
-            #print("$id: Method is \"$method\", caller is \"$caller\", logmsg is \"$logmsg\"\n");
-            print($id . " -- " . caller() ."::".$method." called by \n");
-            print($id . " -- \t" .$caller."\n");
-            print($id . " -- \t\t".$logmsg."\n");
+            if ($self->{DEBUG}){
+                print($id . " -- " . caller() ."::".$method." called by \n");
+                print($id . " -- \t" .$caller."\n");
+                print($id . " -- \t\t".$logmsg."\n");
+            }
 }
 
 
