@@ -45,6 +45,11 @@ foreach my $arg (@ARGV){
     my ($key,$value)=split(/=/,$arg);
     $params->{$key}=$value;
 }
+
+if (exists($params->{INTERVAL})){
+    $interval=$params->{INTERVAL};
+}
+
 #print(Dumper(%params));
 
 
