@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::Helpers::ServiceBus;
+package SGMonitor::Helpers::CLW;
 use Data::Dumper;
 use LWP::UserAgent;
 use Time::HiRes qw(gettimeofday);
@@ -31,24 +31,34 @@ sub call_object($\%){
         my $params_obj=shift;
 
 
+        my $id=int(rand(time()));
+
+
         my @params;
         my $encoded_params;
 
-        foreach my $key(%{$params_obj}){
-            push(@params,"$key"."=".$params_obj->{$key});
+
+        if($self->{DEBUG}){
+            print($self->{ENCODER}->encode($params_obj)."\n");
         }
 
-        my $encoded_params=join('&',@params);
+        foreach my $key (keys %{$params_obj}){
+            my $string=$key."=".$params_obj->{$key};
+            push(@params,$string);
+        }
+
+        $encoded_params=join('&',@params);
+        $encoded_params='app='.$method.'&'.$encoded_params;
 
         if ($self->{DEBUG}){
             $self->trace_log($id,
                             'call_object',
                             scalar(caller),
-                            "ARGS:  method:\"$method\", params_obj: ".$self->{ENCODER}->encode($params_obj)
+                            "ARGS:  method:\"$method\", params_obj: ".$encoded_params
                             );
         }
 
-        my ($elapsed,$status,$extra)=$self->call($method,$encoded_params);
+        my ($elapsed,$status,$extra)=$self->call($method,$encoded_params,$id);
 
         return($elapsed,$status,$extra);
 
@@ -58,6 +68,7 @@ sub call($$$){
         my $self=shift;
 	my $service=shift;
 	my $encoded_params=shift;
+        my $id=shift;
 
         my $t0;
         my $t1;
@@ -75,7 +86,7 @@ sub call($$$){
         my $response;
 
         eval {
-                $response = $self->{UA}->get( $self->{URL}."?",$encoded_params);
+                $response = $self->{UA}->get( $self->{URL}."?".$encoded_params);
                 $t1=gettimeofday();
         } or do {
                 $t1=gettimeofday();
@@ -112,7 +123,7 @@ sub call($$$){
         my $native_object;
 
         # <error>Yes</error>
-        if ($respose_content =~ /<error>Yes<\/error>/) {
+        if ($response_content =~ /<error>Yes<\/error>/) {
             $self->trace_log($id,
                             'call',
                             scalar(caller),
