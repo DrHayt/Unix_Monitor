@@ -37,12 +37,20 @@ sub run(){
 
     #  Example from Mangesh;
     #CITI,0001712972,3400162,False,True
+    #DMI,1432654869,14648908,True,True    (returned result)
 
 
-    my %params=( ClientCode => 'CITI',
-                 LoanNumber => '0001712972',
-                 SpiPropertyId => 3400162,
-                 IncludeWas => JSON::false,
+
+    #my %params=( ClientCode => 'CITI',
+    #             LoanNumber => '0001712972',
+    #             SpiPropertyId => 3400162,
+    #             IncludeWas => JSON::false,
+    #             IncludeCorrectedDamages => JSON::true
+    #            );
+    my %params=( ClientCode => 'DMI',
+                 LoanNumber => '1432654869',
+                 SpiPropertyId => 14648908,
+                 IncludeWas => JSON::true,
                  IncludeCorrectedDamages => JSON::true
                 );
 

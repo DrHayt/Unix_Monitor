@@ -41,6 +41,7 @@ eval {
 
 
 my $params;
+$params->{TIMING}=0;
 foreach my $arg (@ARGV){
     my ($key,$value)=split(/=/,$arg);
     $params->{$key}=$value;
@@ -49,6 +50,7 @@ foreach my $arg (@ARGV){
 if (exists($params->{INTERVAL})){
     $interval=$params->{INTERVAL};
 }
+
 
 #print(Dumper(%params));
 
@@ -63,6 +65,11 @@ while(1){
     my $elapsed=$t1-$t0;
 
     my $remaining=$interval - $elapsed;
+
+
+    if($params->{TIMING}){
+        print("Call took $elapsed\n");
+    }
 
     if ($remaining >0){
         usleep($remaining*1000000);
