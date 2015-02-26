@@ -24,14 +24,13 @@ sub new(){
 
 sub run(){
     my $self=shift;
-    my $start=1466;
-    my $range=30;
-    my $propertyid=int(rand($range))+$start;
+    my $start=6873;
+    my $range=400;
+    my $param_id=int(rand($range))+$start;
 
-    my %params=( 'WorkerObjectID' => 1466
+    my %params=( 'WorkerObjectID' => $param_id
                 
                 );
-                #,'IgnoreSPI' => JSON::false );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
