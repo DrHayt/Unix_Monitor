@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::DamagesService_GetAssetDamageHistory;
+package SGMonitor::DamagesService_GetDamageImagesForDamage;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use Net::Statsd;
@@ -16,7 +16,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="DamagesService.GetAssetDamageHistory";
+    $self->{SERVICE_NAME}="DamagesService.GetDamageImagesForDamage";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
@@ -30,7 +30,7 @@ sub run(){
 
     # AddValidationRule("DamagesService.GetReportedDamage", "ReportedDamageId", typeof(long));
 
-    my %params=( AssetDamageId => $number
+    my %params=( ReportedDamageId => $number
                 );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
