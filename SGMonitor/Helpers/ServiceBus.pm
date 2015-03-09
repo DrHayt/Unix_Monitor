@@ -12,7 +12,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
     $self->{URL}=$args->{url} || 'http://servicebus/Execute.svc/Execute';
-    $self->{TIMEOUT}=$args->{timeout} || 10;
+    $self->{TIMEOUT}=$args->{timeout} || 50;
 
     $self->{UA}= LWP::UserAgent->new();
     $self->{UA}->timeout($self->{TIMEOUT});
@@ -95,7 +95,7 @@ sub call($$){
             $self->trace_log($id,
                             'call_object',
                             scalar(caller),
-                            "Bad Response: ".$response->code );
+                            "Bad Response: ".$response->code." ".$response->content);
             return($elapsed,"INVALID_RESPONSE",
                     "HTTP Code: " . 
                     $response->code() . 
