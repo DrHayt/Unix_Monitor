@@ -47,11 +47,15 @@ sub run(){
     #             IncludeWas => JSON::false,
     #             IncludeCorrectedDamages => JSON::true
     #            );
-    my %params=( ClientCode => 'DMI',
-                 LoanNumber => '1432654869',
-                 SpiPropertyId => 14648908,
-                 IncludeWas => JSON::true,
-                 IncludeCorrectedDamages => JSON::true
+
+    #orderNumbers=160487617&spiClientCode=CMC&loanNumber=1771457996&spiPropertyId=7779074&useWasIs=False&includeDamage=True&includeCorrectedDamages=False
+    
+
+    my %params=( ClientCode => 'CMC',
+                 LoanNumber => '1771457996',
+                 SpiPropertyId => 7779074,
+                 IncludeWas => JSON::false,
+                 IncludeCorrectedDamages => JSON::false
                 );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
