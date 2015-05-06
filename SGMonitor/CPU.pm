@@ -12,7 +12,6 @@ sub new(){
     #  Get an initial copy of the data.
     $self->{CPU_STATS}=SGMonitor::Helpers::cpu_stats->new();
     $self->{host}=$args->{HOST_OVERRIDE} || hostname;
-    $self->{host}=hostname;
     $self->{host}=~ s/\./_/g;
 
     return(bless($self,$class));
