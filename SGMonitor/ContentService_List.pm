@@ -11,8 +11,6 @@ sub new(){
     my $self = {};
 
     $self->{SB}=SGMonitor::Helpers::ServiceBus->new( $args );
-    $self->{host}=hostname();
-    $self->{host}=~ s/\./_/g;
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
     $self->{SERVICE_NAME}="ContentService.List";
