@@ -6,7 +6,7 @@ use Sys::Hostname;
 use SGMonitor::Helpers::cpu_stats;
 
 sub new(){
-    my $class=shift;
+    my ($class,$args)=@_;
     my $self = {};
 
     #  Get an initial copy of the data.
