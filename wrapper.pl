@@ -82,7 +82,7 @@ while(1){
         print("Call took $elapsed\n");
     }
 
-    last if(int($t1-$startup_time) > $lifetime);
+    last if(int($t1-$startup_time) > ($lifetime*60));
 
     if ($remaining >0){
         usleep($remaining*1000000);
