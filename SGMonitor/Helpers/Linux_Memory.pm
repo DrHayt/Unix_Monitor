@@ -1,31 +1,35 @@
 use strict;
 use warnings;
-package SGMonitor::Helpers::unix_load;
+package SGMonitor::Helpers::Linux_Memory;
 use Data::Dumper;
 
 sub new(){
-    my $class=shift;
+    my ($class,$args)=@_;
     my $self = {};
 
     $self->{STAT_FILE}="/proc/meminfo";
 
+    $self->{DEBUG} = $args->{DEBUG} || 0;
+
     open(STATS, $self->{STAT_FILE});
-        $self->{STAT_LINE}=<STATS>;
-        chomp($self->{STAT_LINE});
+        while(my $line=<STATS>){
+            chomp($line);
+            $line =~ s/\(/_/g;
+            $line =~ s/\)/_/g;
+            $line =~ s/://g;
+            my @tmparray=split(/\s+/,$line);
+            $self->{stats}{$tmparray[0]}=$tmparray[1];
+            #print(Dumper(@tmparray));
+        }
     close(STATS);
 
-    my @tmparray=split(/ /,$self->{STAT_LINE});
-
-    $self->{one_min}     = $tmparray[0];
-    $self->{five_min}    = $tmparray[1];
-    $self->{fifteen_min} = $tmparray[2];
-    ($self->{active_procs},$self->{total_procs})=split(/\//,$tmparray[3]);
-    $self->{pid_current} = $tmparray[4];
-    $self->{pid_last}    = $self->{pid_current};
-
-    $self->{pid_churn}   = 0;
-
     return(bless($self,$class));
+}
+
+
+sub get_stat_names(){
+    my $self=shift;
+    return(keys(%{$self->{stats}}));
 }
 
 
@@ -40,27 +44,17 @@ sub get_stat($){
 sub refresh_stats(){
     my $self=shift;
 
-    $self->{STAT_FILE}="/proc/loadavg";
-
     open(STATS, $self->{STAT_FILE});
-        $self->{STAT_LINE}=<STATS>;
-        chomp($self->{STAT_LINE});
+        while(my $line=<STATS>){
+            chomp($line);
+            $line =~ s/\(/_/g;
+            $line =~ s/\)/_/g;
+            $line =~ s/://g;
+            my @tmparray=split(/\s+/,$line);
+            $self->{$tmparray[0]}=$tmparray[1];
+            #print(Dumper(@tmparray));
+        }
     close(STATS);
-
-    my @tmparray=split(/ /,$self->{STAT_LINE});
-
-    $self->{one_min}        = $tmparray[0];
-    $self->{five_min}        = $tmparray[1];
-    $self->{fifteen_min}       = $tmparray[2];
-    ($self->{active_procs},$self->{total_procs})=split(/\//,$tmparray[3]);
-    $self->{pid_last}    = $self->{pid_current};
-    $self->{pid_current} = $tmparray[4];
-
-    if ($self->{pid_current} >= $self->{pid_last}){
-        $self->{pid_churn}=$self->{pid_current} - $self->{pid_last};
-    } else {
-        $self->{pid_churn}=($self->{MAX_PID} - $self->{pid_last}) + $self->{pid_current};
-    }
 
 }
 1;
