@@ -12,7 +12,7 @@ sub new(){
     #  Get an initial copy of the data.
     $self->{DEBUG} = $args->{DEBUG} || 0;
     $self->{STATS}=SGMonitor::Helpers::unix_load->new();
-    $self->{host}=hostname;
+    $self->{host}=$args->{HOST_OVERRIDE} || hostname;
     $self->{host}=~ s/\./_/g;
 
     return(bless($self,$class));

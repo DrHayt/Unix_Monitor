@@ -6,12 +6,13 @@ use Time::HiRes qw(gettimeofday usleep);
 
 use lib $ENV{'HOME'}."/perl5";
 
-
 my $interval=3;
+
+my $time_to_live=30;
+my $time_range=60;
 
 
 my $CLASS_BASE ="SGMonitor";
-
 
 #  Check to see if we got a monitor to run as an argument.
 if ($#ARGV lt 0){
@@ -51,9 +52,20 @@ if (exists($params->{INTERVAL})){
     $interval=$params->{INTERVAL};
 }
 
+if (exists($params->{TIME_TO_LIVE})){
+    $time_to_live=$params->{TIME_TO_LIVE};
+}
+
+if (exists($params->{TIME_RANGE})){
+    $time_range=$params->{TIME_RANGE};
+}
+
+
+my $lifetime=$time_to_live+int(rand($time_range));
 
 #print(Dumper(%params));
 
+my $startup_time=gettimeofday();
 
 my $The_Monitor=$real_monitor->new( $params );
 
@@ -66,10 +78,11 @@ while(1){
 
     my $remaining=$interval - $elapsed;
 
-
     if($params->{TIMING}){
         print("Call took $elapsed\n");
     }
+
+    last if(int($t1-$startup_time) > ($lifetime*60));
 
     if ($remaining >0){
         usleep($remaining*1000000);
