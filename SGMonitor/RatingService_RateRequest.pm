@@ -22,7 +22,7 @@ sub new(){
 sub run(){
     my $self=shift;
 
-    my $params = "{ 'raterequest' => { 'Tasks' => [ { 'Measures' => [ { 'Value' => 0, 'UnitOfMeasure' => 'IN', 'Type' => 'HEIGHT' }, { 'Value' => 100, 'UnitOfMeasure' => 'IN', 'Type' => 'LENGTH' }, { 'Value' => 50, 'UnitOfMeasure' => 'IN', 'Type' => 'WIDTH' } ], 'SequenceNumber' => 0, 'TaskId' => '2510' } ], 'LoanType' => 'CV', 'WorkCode' => 'GCL', 'Occupied' => 'V', 'State' => 'OH', 'AccessGained' => '', 'ServiceLine' => 'PP', 'PricingDate' => '2015-05-08', 'ZipCode' => '44092', 'ClientId' => 'RRR', 'VendorId' => 'INRESR' } }"; 
+    my $params = "{ 'raterequest' : { 'Tasks' : [ { 'Measures' : [ { 'Value' : 0, 'UnitOfMeasure' : 'IN', 'Type' : 'HEIGHT' }, { 'Value' : 100, 'UnitOfMeasure' : 'IN', 'Type' : 'LENGTH' }, { 'Value' : 50, 'UnitOfMeasure' : 'IN', 'Type' : 'WIDTH' } ], 'SequenceNumber' : 0, 'TaskId' : '2510' } ], 'LoanType' : 'CV', 'WorkCode' : 'GCL', 'Occupied' : 'V', 'State' : 'OH', 'AccessGained' : '', 'ServiceLine' : 'PP', 'PricingDate' : '2015-05-08', 'ZipCode' : '44092', 'ClientId' : 'RRR', 'VendorId' : 'INRESR' } }"; 
 
     my ($elapsed,$status,$extra)=$self->{SB}->call($self->{SERVICE_NAME},$params);
 
