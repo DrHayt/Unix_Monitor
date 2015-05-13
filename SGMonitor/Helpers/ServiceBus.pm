@@ -12,7 +12,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
     $self->{URL}=$args->{url} || 'http://servicebus/Execute.svc/Execute';
-    $self->{TIMEOUT}=$args->{timeout} || 50;
+    $self->{TIMEOUT}=$args->{SB_TIMEOUT} || 50;
 
     $self->{UA}= LWP::UserAgent->new();
     $self->{UA}->timeout($self->{TIMEOUT});
@@ -142,9 +142,13 @@ sub trace_log($$$$){
             my $method = shift;
             my $caller = shift;
             my $logmsg = shift;
+            if ($self->{DEBUG} ge 10 ){
+                print($id . " -- " . caller() ."::".$method." called by \n");
+            }
+            if ($self->{DEBUG} ge 5 ){
+                print($id . " -- \t" .$caller."\n");
+                }
             if ($self->{DEBUG}){
-                #print($id . " -- " . caller() ."::".$method." called by \n");
-                #print($id . " -- \t" .$caller."\n");
                 print($id . " -- \t\t".$logmsg."\n");
             }
 }
