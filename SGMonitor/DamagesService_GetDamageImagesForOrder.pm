@@ -25,9 +25,8 @@ sub new(){
 
 sub run(){
     my $self=shift;
-    my $start=100100100;
-    my $range=30000000;
-    $ordernumber=int(rand($self->{RANGE}))+$self->{START};
+
+    my $ordernumber=int(rand($self->{RANGE}))+$self->{START};
 
     my %params=( 'ORDERNUMBER' => $ordernumber 
                 );
