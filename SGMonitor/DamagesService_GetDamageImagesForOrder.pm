@@ -14,6 +14,9 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
+    $self->{START} = $args->{RANGE_START} || 100100100;
+    $self->{RANGE} = $args->{RANGE_SIZE} || 30000000;
+
     $self->{SERVICE_NAME}="DamagesService.GetDamageImagesForOrder";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
@@ -24,7 +27,7 @@ sub run(){
     my $self=shift;
     my $start=100100100;
     my $range=30000000;
-    my $ordernumber=int(rand($range))+$start;
+    $ordernumber=int(rand($self->{RANGE}))+$self->{START};
 
     my %params=( 'ORDERNUMBER' => $ordernumber 
                 );

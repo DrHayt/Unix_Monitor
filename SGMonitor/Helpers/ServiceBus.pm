@@ -124,7 +124,7 @@ sub call($$){
             $self->trace_log($id,
                             'call',
                             scalar(caller),
-                            "Call Failed Failed: ". $self->{ENCODER}->encode($native_object->{error})
+                            "Call Failed: ". $self->{ENCODER}->encode($native_object->{error})
                             );
             return($elapsed,"CALL_ERROR",$native_object->{error});
         }
@@ -143,8 +143,8 @@ sub trace_log($$$$){
             my $caller = shift;
             my $logmsg = shift;
             if ($self->{DEBUG}){
-                print($id . " -- " . caller() ."::".$method." called by \n");
-                print($id . " -- \t" .$caller."\n");
+                #print($id . " -- " . caller() ."::".$method." called by \n");
+                #print($id . " -- \t" .$caller."\n");
                 print($id . " -- \t\t".$logmsg."\n");
             }
 }

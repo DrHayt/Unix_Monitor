@@ -1,0 +1,3 @@
+bin/tron --register VW_inet_DFW 'work/Monitor_URL.pl web_monitors/inet_homepage_dfw'
+bin/tron --enable VW_inet_DFW
+bin/tron --start VW_inet_DFW

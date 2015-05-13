@@ -1,0 +1,6 @@
+bin/tron --register VW_inet_DFW_lb 'work/Monitor_URL.pl web_monitors/inet_homepage_dfw_lb'
+bin/tron --enable VW_inet_DFW_lb
+bin/tron --start VW_inet_DFW_lb
+bin/tron --register VW_DFW_lb 'work/Monitor_URL.pl web_monitors/vnet_homepage_dfw_lb'
+bin/tron --enable VW_DFW_lb
+bin/tron --start VW_DFW_lb

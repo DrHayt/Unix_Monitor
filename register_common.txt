@@ -1,0 +1,27 @@
+#tron --register CLW_110   enabled  running  62175  S       gitbox/Unix_Monitor/wrapper.pl CLW_110                                  
+#tron --register CLW_115   enabled  running  1227   S       gitbox/Unix_Monitor/wrapper.pl CLW_115                                  
+#tron --register CLW_120   enabled  running  1229   S       gitbox/Unix_Monitor/wrapper.pl CLW_120                                  
+#tron --register CLW_180   enabled  running  59258  S       gitbox/Unix_Monitor/wrapper.pl CLW_180                                  
+#
+#tron --register SDS_FA    'gitbox/Unix_Monitor/wrapper.pl SPIDataService_FileAccessibility'
+#tron --register SDS_GPI   'gitbox/Unix_Monitor/wrapper.pl SPIDataService_GetPropertyInfo'
+#tron --register SDS_GWOI  'gitbox/Unix_Monitor/wrapper.pl SPIDataService_GetWorkOrderInfo'
+bin/tron --register CPU       'gitbox/Unix_Monitor/wrapper.pl CPU'
+bin/tron --register LOAD      'gitbox/Unix_Monitor/wrapper.pl LOAD'
+bin/tron --register CS_List   'gitbox/Unix_Monitor/wrapper.pl ContentService_List'
+bin/tron --register DS_GDIFO  'gitbox/Unix_Monitor/wrapper.pl DamagesService_GetDamageImagesForOrder'
+bin/tron --register DS_GDIFL  'gitbox/Unix_Monitor/wrapper.pl DamagesService_GetDamageImagesForLoan'
+bin/tron --register DS_GIDFS  'gitbox/Unix_Monitor/wrapper.pl DamagesService_GetInspectionDamagesForSPI'
+bin/tron --register DS_GR     'gitbox/Unix_Monitor/wrapper.pl SPIGlass_GetRestated' 
+bin/tron --register DS_GWOI   'gitbox/Unix_Monitor/wrapper.pl SPIGlass_GetWorkOrderInfo'
+bin/tron --enable CPU
+bin/tron --enable LOAD 
+bin/tron --enable CS_List
+bin/tron --enable DS_GDIFO
+bin/tron --enable DS_GDIFL
+bin/tron --enable DS_GIDFS
+bin/tron --enable DS_GR
+bin/tron --enable DS_GWOI
+bin/tron --register U_P   'gitbox/Unix_Monitor/wrapper.pl Utility_Ping'
+bin/tron --enable U_P   'gitbox/Unix_Monitor/wrapper.pl Utility_Ping'
+bin/tron --start U_P   'gitbox/Unix_Monitor/wrapper.pl Utility_Ping'
