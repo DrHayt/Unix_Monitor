@@ -11,6 +11,8 @@ my $interval=3;
 my $time_to_live=30;
 my $time_range=60;
 
+my $runonce=0;
+
 
 my $CLASS_BASE ="SGMonitor";
 
@@ -60,6 +62,10 @@ if (exists($params->{TIME_RANGE})){
     $time_range=$params->{TIME_RANGE};
 }
 
+if (exists($params->{RUNONCE})){
+    $runonce=$params->{RUNONCE};
+}
+
 
 my $lifetime=$time_to_live+int(rand($time_range));
 
@@ -83,6 +89,8 @@ while(1){
     }
 
     last if(int($t1-$startup_time) > ($lifetime*60));
+
+    last if($runonce);
 
     if ($remaining >0){
         usleep($remaining*1000000);
