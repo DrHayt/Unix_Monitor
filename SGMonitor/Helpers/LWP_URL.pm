@@ -21,6 +21,7 @@ sub new(){
 
 
 sub get_override($$$){
+        my $self=shift;
         my $url=shift;
         my $name=shift;
         my $address=shift;
@@ -38,6 +39,7 @@ sub get_override($$$){
 }
 
 sub post_override($$$$){
+        my $self=shift;
         my $url=shift;
         my $body=shift;
         my $name=shift;
@@ -56,6 +58,7 @@ sub post_override($$$$){
 }
 
 sub get($){
+        my $self=shift;
         my $url=shift;
 
         my $t0=Time::HiRes::gettimeofday();
@@ -67,6 +70,7 @@ sub get($){
 }
 
 sub post($$){
+        my $self=shift;
         my $url=shift;
         my $body=shift;
 
