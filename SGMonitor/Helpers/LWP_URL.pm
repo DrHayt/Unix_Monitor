@@ -30,7 +30,7 @@ sub get_override($$$){
 
         my ($code,$elapsed,$content) = $self->get( $url );
 
-        LWP::UserAgent::DNS::Hosts->disable_override()
+        LWP::UserAgent::DNS::Hosts->disable_override();
         LWP::UserAgent::DNS::Hosts->clear_hosts();
 
         return($code,$elapsed,$content);
@@ -48,7 +48,7 @@ sub post_override($$$$){
 
         my ($code,$elapsed,$content) = $self->post( $url );
 
-        LWP::UserAgent::DNS::Hosts->disable_override()
+        LWP::UserAgent::DNS::Hosts->disable_override();
         LWP::UserAgent::DNS::Hosts->clear_hosts();
 
         return($code,$elapsed,$content);
