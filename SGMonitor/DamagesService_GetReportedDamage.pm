@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::DamagesService_GetAssetDamageHistory;
+package SGMonitor::DamagesService_GetReportedDamage;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use Net::Statsd;
@@ -14,7 +14,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="DamagesService.GetAssetDamageHistory";
+    $self->{SERVICE_NAME}="DamagesService.GetReportedDamage";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
