@@ -99,7 +99,7 @@ sub call($$$){
             $self->trace_log($id,
                             'call',
                             scalar(caller),
-                            "Bad Response: ".$response->code );
+                            "Bad Response: ".$response->code ." Content: " . $response->content );
             return($elapsed,"INVALID_RESPONSE",
                     "HTTP Code: " . 
                     $response->code() . 
