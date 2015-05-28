@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::SPIGlass_GetRestatedINSPIBids;
+package SGMonitor::DamagesService_INSPIRestated;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use Net::Statsd;
@@ -11,12 +11,10 @@ sub new(){
     my $self = {};
 
     $self->{SB}=SGMonitor::Helpers::ServiceBus->new( $args );
-    $self->{host}=hostname();
-    $self->{host}=~ s/\./_/g;
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="SPIGlass.GetRestated";
+    $self->{SERVICE_NAME}="DamagesService.INSPIRestated";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
@@ -26,13 +24,12 @@ sub run(){
     my $self=shift;
     my $start=14000000;
     my $range=1000000;
-    my $propertyid=int(rand($range))+$start;
+    my $number=int(rand($range))+$start;
 
-    my %params=( 'PropertyId' => $propertyid ,
-                'IncludeBids' => JSON::false,
-                'Source'      => 'INSPI'
+    # AddValidationRule("DamagesService.GetReportedDamage", "ReportedDamageId", typeof(long));
+
+    my %params=( PropertyId => $number
                 );
-                #,'IgnoreSPI' => JSON::false );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
