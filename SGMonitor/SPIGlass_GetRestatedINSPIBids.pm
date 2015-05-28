@@ -24,8 +24,8 @@ sub new(){
 
 sub run(){
     my $self=shift;
-    my $start=10000000;
-    my $range=5000000;
+    my $start=13000000;
+    my $range=2000000;
     my $propertyid=int(rand($range))+$start;
 
     my %params=( 'PropertyId' => $propertyid ,
