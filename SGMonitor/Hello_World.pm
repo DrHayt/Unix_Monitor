@@ -13,6 +13,7 @@ sub new(){
 sub run(){
     my $self=shift;
     printf("Hello World\n");
+    return(undef,undef,undef,undef);
 }
 
 

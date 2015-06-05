@@ -29,6 +29,8 @@ sub run(){
 
     Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
 
+    return($self->{BASE_STRING},$elapsed,$status,$extra);
+
 }
 
 

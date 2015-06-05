@@ -22,32 +22,6 @@ sub new(){
 
 sub run(){
     my $self=shift;
-    #my $start=100100100;
-    #my $range=30000000;
-    #my $ordernumber=int(rand($range))+$start;
-
-    #AddValidationRule("DamagesService.GetDamageImagesForLoan", "ClientCode", typeof(string));
-    #AddValidationRule("DamagesService.GetDamageImagesForLoan", "LoanNumber", typeof(string));
-    #AddValidationRule("DamagesService.GetDamageImagesForLoan", "SpiPropertyId", typeof(long));
-    #AddValidationRule("DamagesService.GetDamageImagesForLoan", "IncludeWas", typeof(bool), false, true);
-    #AddValidationRule("DamagesService.GetDamageImagesForLoan", "IsHash", typeof(bool), false, true);
-    #AddValidationRule("DamagesService.GetDamageImagesForLoan", "IncludeCorrectedDamages", typeof(bool), false);
-
-    #  Example from Mangesh;
-    #CITI,0001712972,3400162,False,True
-    #DMI,1432654869,14648908,True,True    (returned result)
-
-
-
-    #my %params=( ClientCode => 'CITI',
-    #             LoanNumber => '0001712972',
-    #             SpiPropertyId => 3400162,
-    #             IncludeWas => JSON::false,
-    #             IncludeCorrectedDamages => JSON::true
-    #            );
-
-    #orderNumbers=160487617&spiClientCode=CMC&loanNumber=1771457996&spiPropertyId=7779074&useWasIs=False&includeDamage=True&includeCorrectedDamages=False
-    
 
     my %params=( ClientCode => 'CMC',
                  LoanNumber => '1771457996',
@@ -60,6 +34,7 @@ sub run(){
 
     Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
 
+    return($self->{BASE_STRING},$elapsed,$status,$extra);
 }
 
 

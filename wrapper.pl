@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Time::HiRes qw(gettimeofday usleep);
+use Sys::Syslog;         # oh noes! standards?! logging?! [*head explodes*]
+
 
 use lib $ENV{'HOME'}."/perl5";
 
@@ -75,6 +77,8 @@ my $startup_time=gettimeofday();
 
 my $The_Monitor=$real_monitor->new( $params );
 
+openlog("Monitor $monitor", 'ndelay', 'user');
+
 while(1){
     my $t0=gettimeofday();
     $The_Monitor->run();
@@ -96,6 +100,8 @@ while(1){
         usleep($remaining*1000000);
     }
 }
+
+closelog();
 
 sub usage(){
     print(STDERR "This program requires 1 argument which is the name of a monitor to run.\n");

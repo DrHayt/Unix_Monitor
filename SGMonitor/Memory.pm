@@ -33,6 +33,8 @@ sub run(){
         }
 	Net::Statsd::gauge($string, $value);
     }
+	
+    return(undef,$elapsed,$status,$extra);
 }
 
 1;
