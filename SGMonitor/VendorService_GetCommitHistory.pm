@@ -3,7 +3,6 @@ use warnings;
 package SGMonitor::VendorService_GetCommitHistory;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
-use Net::Statsd;
 use Sys::Hostname;
 
 sub new(){

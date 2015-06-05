@@ -3,7 +3,6 @@ use warnings;
 package SGMonitor::CLW_115;
 use SGMonitor::Helpers::CLW;
 use Data::Dumper;
-use Net::Statsd;
 use Sys::Hostname;
 
 sub new(){

@@ -4,7 +4,7 @@ use warnings;
 use Data::Dumper;
 use Time::HiRes qw(gettimeofday usleep);
 use Sys::Syslog;         # oh noes! standards?! logging?! [*head explodes*]
-
+use Net::Statsd;
 
 use lib $ENV{'HOME'}."/perl5";
 
@@ -46,10 +46,22 @@ eval {
 
 
 my $params;
+$params->{INTERVAL}=$interval;
 $params->{TIMING}=0;
+$params->{SYSLOG}=1;
+$params->{STATSD}=1;
+
 foreach my $arg (@ARGV){
     my ($key,$value)=split(/=/,$arg);
     $params->{$key}=$value;
+}
+
+if (exists($params->{STATSD})){
+    $interval=$params->{STATSD};
+}
+
+if (exists($params->{SYSLOG})){
+    $interval=$params->{SYSLOG};
 }
 
 if (exists($params->{INTERVAL})){
@@ -84,17 +96,28 @@ while(1){
     my @tmparray=$The_Monitor->run();
     my $t1=gettimeofday();
 
-    if (defined($tmparray[0])){
-	Net::Statsd::timing($tmparray[0].".".$tmparray[2],$tmparray[1]*1000);
-    }
 
     my $elapsed=$t1-$t0;
 
     my $remaining=$interval - $elapsed;
 
-    if($params->{TIMING}){
+    my $fmt_string="SERVICE=%s STATUS=%s ELAPSED=%.2f";
+
+    if (defined($tmparray[0]) && $params->{STATSD}){
+	Net::Statsd::timing($tmparray[0].".".$tmparray[2],$tmparray[1]*1000);
+    }
+
+    if (defined($tmparray[0]) && $params->{SYSLOG}){
+	syslog('info', $fmt_string, $monitor, $tmparray[2], $tmparray[1]*1000);
+    }
+
+    if (defined($tmparray[0]) && $params->{TIMING}){
+        printf($fmt_string."\n", $monitor, $tmparray[2], $tmparray[1]*1000);
+    } elsif ( $params->{TIMING} ) {
         print("Total Call took $elapsed\n");
     }
+
+        #printf($fmt_string."\n", $monitor, $tmparray[2], $tmparray[1]*1000);
 
     last if(int($t1-$startup_time) > ($lifetime*60));
 

@@ -3,7 +3,6 @@ use warnings;
 package SGMonitor::Authorization_GetFunctionsByUsername;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
-use Net::Statsd;
 use Sys::Hostname;
 
 sub new(){

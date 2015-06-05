@@ -3,7 +3,6 @@ use warnings;
 package SGMonitor::DamagesService_GetDamageImagesForLoan;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
-use Net::Statsd;
 use Sys::Hostname;
 
 sub new(){
