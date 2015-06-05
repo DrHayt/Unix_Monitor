@@ -26,8 +26,6 @@ sub run(){
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
-    Net::Statsd::timing($self->{BASE_STRING}.".".$status,$elapsed*1000);
-
     return($self->{BASE_STRING},$elapsed,$status,$extra);
 
 }

@@ -28,7 +28,7 @@ sub run(){
                     $self->{host}
                     );
     }
-    return(undef,$elapsed,$status,$extra);
+    return(undef,undef,undef,undef);
 }
 
 sub send_cpustat($$$$){

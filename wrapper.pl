@@ -81,15 +81,19 @@ openlog("Monitor $monitor", 'ndelay', 'user');
 
 while(1){
     my $t0=gettimeofday();
-    $The_Monitor->run();
+    my @tmparray=$The_Monitor->run();
     my $t1=gettimeofday();
+
+    if (defined($tmparray[0])){
+	Net::Statsd::timing($tmparray[0].".".$tmparray[2],$tmparray[1]*1000);
+    }
 
     my $elapsed=$t1-$t0;
 
     my $remaining=$interval - $elapsed;
 
     if($params->{TIMING}){
-        print("Call took $elapsed\n");
+        print("Total Call took $elapsed\n");
     }
 
     last if(int($t1-$startup_time) > ($lifetime*60));

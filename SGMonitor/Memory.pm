@@ -34,7 +34,7 @@ sub run(){
 	Net::Statsd::gauge($string, $value);
     }
 	
-    return(undef,$elapsed,$status,$extra);
+    return(undef,undef,undef,undef);
 }
 
 1;
