@@ -1,12 +1,12 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
+use lib $ENV{'HOME'}."/perl5";
 use Data::Dumper;
 use Time::HiRes qw(gettimeofday usleep);
 use Sys::Syslog;         # oh noes! standards?! logging?! [*head explodes*]
 use Net::Statsd;
 
-use lib $ENV{'HOME'}."/perl5";
 
 my $interval=3;
 
@@ -50,10 +50,15 @@ $params->{INTERVAL}=$interval;
 $params->{TIMING}=0;
 $params->{SYSLOG}=1;
 $params->{STATSD}=1;
+$params->{EXTRA}=0;
 
 foreach my $arg (@ARGV){
     my ($key,$value)=split(/=/,$arg);
     $params->{$key}=$value;
+}
+
+if (exists($params->{EXTRA})){
+    $interval=$params->{EXTRA};
 }
 
 if (exists($params->{STATSD})){
@@ -109,6 +114,10 @@ while(1){
 
     if (defined($tmparray[0]) && $params->{SYSLOG}){
 	syslog('info', $fmt_string, $monitor, $tmparray[2], $tmparray[1]*1000);
+    }
+
+    if (defined($tmparray[0]) && $params->{EXTRA}){
+        printf($fmt_string." %s\n", $monitor, $tmparray[2], $tmparray[1]*1000,Dumper($tmparray[3]));
     }
 
     if (defined($tmparray[0]) && $params->{TIMING}){
