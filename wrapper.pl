@@ -48,6 +48,7 @@ eval {
 my $params;
 $params->{INTERVAL}=$interval;
 $params->{TIMING}=0;
+$params->{SYSLOG_SUCCESS}=1;
 $params->{SYSLOG}=1;
 $params->{STATSD}=1;
 $params->{EXTRA}=0;
@@ -55,18 +56,6 @@ $params->{EXTRA}=0;
 foreach my $arg (@ARGV){
     my ($key,$value)=split(/=/,$arg);
     $params->{$key}=$value;
-}
-
-if (exists($params->{EXTRA})){
-    $interval=$params->{EXTRA};
-}
-
-if (exists($params->{STATSD})){
-    $interval=$params->{STATSD};
-}
-
-if (exists($params->{SYSLOG})){
-    $interval=$params->{SYSLOG};
 }
 
 if (exists($params->{INTERVAL})){
