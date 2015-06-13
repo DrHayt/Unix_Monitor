@@ -1,4 +1,6 @@
 # Unix_Monitor
 Small Simple unix monitoring framework.
 
-Yep
+Automatic builds enabled on docker hub.
+
+Dockerhub name drhayt/sgmonitor
