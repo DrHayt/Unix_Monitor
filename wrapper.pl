@@ -94,7 +94,7 @@ openlog("Monitor $monitor", 'ndelay', 'user');
 
 while(1){
     my $t0=gettimeofday();
-    my ($monitor_name,$monitor_time,$monitor_result,$monitor_extra)=@tmparray=$The_Monitor->run();
+    my ($monitor_name,$monitor_time,$monitor_result,$monitor_extra)=$The_Monitor->run();
     my $t1=gettimeofday();
 
 
@@ -115,7 +115,7 @@ while(1){
 
 	# Should we syslog?
 	if($params->{SYSLOG}){
-		if(($monitor_success eq 'SUCCESS') && $params->{SYSLOG_SUCCESS})){
+		if(($monitor_result eq 'SUCCESS') && $params->{SYSLOG_SUCCESS}){
 		    syslog('info', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
                 } else {
 		    syslog('warn', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
@@ -123,7 +123,7 @@ while(1){
         }
 
 	if ($params->{EXTRA}){
-            printf($fmt_string." %s\n", $monitor, $tmparray[2], $tmparray[1]*1000,Dumper($tmparray[3]));
+            printf($fmt_string." %s\n", $monitor, $monitor_result, $monitor_time*1000,Dumper($monitor_extra));
         }
     } elsif ( $params->{TIMING} ) {
         print("Total Call took $elapsed\n");
