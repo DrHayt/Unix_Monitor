@@ -28,7 +28,7 @@ sub run(){
     Net::Statsd::gauge('system.' . $self->{host} . '.process.active', $self->{STATS}->get_stat('active_procs'));
     Net::Statsd::gauge('system.' . $self->{host} . '.process.total', $self->{STATS}->get_stat('total_procs'));
 
-    return(undef,$elapsed,$status,$extra);
+    return(undef,undef,undef,undef);
 
 }
 
