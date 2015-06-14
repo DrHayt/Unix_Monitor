@@ -8,15 +8,31 @@ use Sys::Syslog;         # oh noes! standards?! logging?! [*head explodes*]
 use Net::Statsd;
 
 
-my $interval=3;
+#
+# Some default config values
+#
+################################################################################
 
-my $time_to_live=30;
-my $time_range=60;
+my $params;
+# Behaviors
+$params->{INTERVAL}=3;
+$params->{TIME_TO_LIVE}=30;
+$params->{TIME_RANGE}=60;
+$params->{TIMING}=0;
+$params->{RUNONCE}=0;
+$params->{SYSLOG_SUCCESS}=1;
+$params->{SYSLOG}=1;
+$params->{STATSD}=1;
+$params->{EXTRA}=0;
 
-my $runonce=0;
 
-
+# Initialization
 my $CLASS_BASE ="SGMonitor";
+
+################################################################################
+#
+#
+#
 
 #  Check to see if we got a monitor to run as an argument.
 if ($#ARGV lt 0){
@@ -29,6 +45,10 @@ my $monitor=shift(@ARGV);
 
 my $real_monitor=$CLASS_BASE . "::" . $monitor;
 
+#
+#  Are we able to instantiate that module
+#
+################################################################################
 eval {
     (my $thing_to_require = $real_monitor) =~ s|::|/|g;
     $thing_to_require.='.pm';
@@ -43,39 +63,26 @@ eval {
     die("Unable to load module $real_monitor derived from $monitor");
 
 };
+################################################################################
+#
+#
+#
 
 
-my $params;
-$params->{INTERVAL}=$interval;
-$params->{TIMING}=0;
-$params->{SYSLOG_SUCCESS}=1;
-$params->{SYSLOG}=1;
-$params->{STATSD}=1;
-$params->{EXTRA}=0;
-
+#
+# Swallow all KEY=VALUE arguments into the parameter array.
+#
+################################################################################
 foreach my $arg (@ARGV){
     my ($key,$value)=split(/=/,$arg);
     $params->{$key}=$value;
 }
+################################################################################
+#
+#
+#
 
-if (exists($params->{INTERVAL})){
-    $interval=$params->{INTERVAL};
-}
-
-if (exists($params->{TIME_TO_LIVE})){
-    $time_to_live=$params->{TIME_TO_LIVE};
-}
-
-if (exists($params->{TIME_RANGE})){
-    $time_range=$params->{TIME_RANGE};
-}
-
-if (exists($params->{RUNONCE})){
-    $runonce=$params->{RUNONCE};
-}
-
-
-my $lifetime=$time_to_live+int(rand($time_range));
+my $lifetime=$params->{TIME_TO_LIVE}+int(rand($params->{TIME_RANGE}));
 
 #print(Dumper(%params));
 
@@ -93,7 +100,7 @@ while(1){
 
     my $elapsed=$t1-$t0;
 
-    my $remaining=$interval - $elapsed;
+    my $remaining=$params->{INTERVAL} - $elapsed;
 
     my $fmt_string="SERVICE=%s STATUS=%s ELAPSED=%.2f";
 
@@ -119,7 +126,7 @@ while(1){
 
     last if(int($t1-$startup_time) > ($lifetime*60));
 
-    last if($runonce);
+    last if($params->{RUNONCE});
 
     if ($remaining >0){
         usleep($remaining*1000000);
