@@ -20,7 +20,7 @@ $params->{TIME_TO_LIVE}=30;
 $params->{TIME_RANGE}=60;
 $params->{TIMING}=0;
 $params->{RUNONCE}=0;
-$params->{SYSLOG_SUCCESS}=1;
+$params->{SYSLOG_SUCCESS}=0;
 $params->{SYSLOG}=1;
 $params->{STATSD}=1;
 $params->{EXTRA}=0;
@@ -94,7 +94,7 @@ openlog("Monitor $monitor", 'ndelay', 'user');
 
 while(1){
     my $t0=gettimeofday();
-    my @tmparray=$The_Monitor->run();
+    my ($monitor_name,$monitor_time,$monitor_result,$monitor_extra)=@tmparray=$The_Monitor->run();
     my $t1=gettimeofday();
 
 
@@ -104,25 +104,30 @@ while(1){
 
     my $fmt_string="SERVICE=%s STATUS=%s ELAPSED=%.2f";
 
-    if (defined($tmparray[0]) && $params->{STATSD}){
-	Net::Statsd::timing($tmparray[0].".".$tmparray[2],$tmparray[1]*1000);
-    }
+    if(defined($monitor_name)){
+	# this means that we got a complete message back from the monitor;
+	
+	# Shoule we statsd?
+	if($params->{STATSD}){
+	    Net::Statsd::timing($monitor_name.".".$monitor_result,$monitor_time*1000);
+	}
 
-    if (defined($tmparray[0]) && $params->{SYSLOG}){
-	syslog('info', $fmt_string, $monitor, $tmparray[2], $tmparray[1]*1000);
-    }
 
-    if (defined($tmparray[0]) && $params->{EXTRA}){
-        printf($fmt_string." %s\n", $monitor, $tmparray[2], $tmparray[1]*1000,Dumper($tmparray[3]));
-    }
+	# Should we syslog?
+	if($params->{SYSLOG}){
+		if(($monitor_success eq 'SUCCESS') && $params->{SYSLOG_SUCCESS})){
+		    syslog('info', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
+                } else {
+		    syslog('warn', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
+                }
+        }
 
-    if (defined($tmparray[0]) && $params->{TIMING}){
-        printf($fmt_string."\n", $monitor, $tmparray[2], $tmparray[1]*1000);
+	if ($params->{EXTRA}){
+            printf($fmt_string." %s\n", $monitor, $tmparray[2], $tmparray[1]*1000,Dumper($tmparray[3]));
+        }
     } elsif ( $params->{TIMING} ) {
         print("Total Call took $elapsed\n");
     }
-
-        #printf($fmt_string."\n", $monitor, $tmparray[2], $tmparray[1]*1000);
 
     last if(int($t1-$startup_time) > ($lifetime*60));
 
