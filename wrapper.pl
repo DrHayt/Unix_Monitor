@@ -118,7 +118,7 @@ while(1){
 		if(($monitor_result eq 'SUCCESS') && $params->{SYSLOG_SUCCESS}){
 		    syslog('info', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
                 } else {
-		    syslog('warn', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
+		    syslog('info', $fmt_string, $monitor_name, $monitor_result, $monitor_time*1000);
                 }
         }
 
