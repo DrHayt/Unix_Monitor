@@ -125,7 +125,8 @@ while(1){
 	if ($params->{EXTRA}){
             printf($fmt_string." %s\n", $monitor, $monitor_result, $monitor_time*1000,Dumper($monitor_extra));
         }
-    } elsif ( $params->{TIMING} ) {
+    }
+    if ( $params->{TIMING} ) {
         print("Total Call took $elapsed\n");
     }
 
