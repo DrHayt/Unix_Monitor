@@ -56,7 +56,7 @@ sub call($$){
           "jsonrpc" : "2.0",
 	  "method" : "$method",
 	  "id" : "$id",
-	  "params" : $encoded_params,
+	  "params" : $encoded_params
 	});
 
 
