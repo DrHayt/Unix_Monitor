@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::BidsService_GetBidImagesForLoan;
+package SGMonitor::BidsService_ListBidImagesForLoan;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use Sys::Hostname;
@@ -13,7 +13,7 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="BidsService.GetBidImagesForLoan";
+    $self->{SERVICE_NAME}="BidsService.ListBidImagesForLoan";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
     return(bless($self,$class));
