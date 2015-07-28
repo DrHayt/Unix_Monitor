@@ -18,7 +18,7 @@ sub new(){
     $self->{SERVICE_NAME}="SPIGlass.ProcessOrder";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
-    $self->{ORDERNUMBER} = $args{ORDERNUMBER} || 0;
+    $self->{ORDERNUMBER} = $args->{ORDERNUMBER} || 0;
 
     return(bless($self,$class));
 }

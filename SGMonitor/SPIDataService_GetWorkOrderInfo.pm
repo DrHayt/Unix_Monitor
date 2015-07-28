@@ -17,14 +17,17 @@ sub new(){
     $self->{SERVICE_NAME}="SPIDataService.GetWorkOrderInfo";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
+    $self->{RANGE}=60000000;
+    $self->{START}=100000000;
+    $self->{ORDERNUMBER}=$args->{ORDERNUMBER} || int(rand($self->{RANGE}))+$self->{START};
+
+
     return(bless($self,$class));
 }
 
 sub run(){
     my $self=shift;
-    my $start=100000000;
-    my $range= 60000000;
-    my $ordernumber=int(rand($range))+$start;
+    my $ordernumber=int($self->{ORDERNUMBER});
 
     my %params=( 'ordernumber' => $ordernumber );
 
