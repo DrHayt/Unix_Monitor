@@ -127,7 +127,7 @@ while(1){
         }
     }
     if ( $params->{TIMING} ) {
-        print("Total Call took $elapsed\n");
+        printf($fmt_string."\n",$monitor,$monitor_result,$monitor_time*1000);
     }
 
     last if(int($t1-$startup_time) > ($lifetime*60));
