@@ -25,6 +25,8 @@ $params->{SYSLOG}=1;
 $params->{STATSD}=1;
 $params->{EXTRA}=0;
 
+$|=1;
+
 
 # Initialization
 my $CLASS_BASE ="SGMonitor";
@@ -92,10 +94,19 @@ my $The_Monitor=$real_monitor->new( $params );
 
 openlog("Monitor $monitor", 'ndelay', 'user');
 
+my $COUNT=0;
+
+
 while(1){
     my $t0=gettimeofday();
     my ($monitor_name,$monitor_time,$monitor_result,$monitor_extra)=$The_Monitor->run();
     my $t1=gettimeofday();
+
+
+    if ($params->{INTERVAL} == '0'){
+	print("Count is $COUNT        \r");
+	$COUNT++;
+	}
 
 
     my $elapsed=$t1-$t0;
@@ -124,6 +135,11 @@ while(1){
 
 	if ($params->{EXTRA}){
             printf($fmt_string." %s\n", $monitor, $monitor_result, $monitor_time*1000,Dumper($monitor_extra));
+        }
+	if ($params->{FAILED}){
+		if($monitor_result ne 'SUCCESS'){
+		    printf($fmt_string." %s\n", $monitor, $monitor_result, $monitor_time*1000,Dumper($monitor_extra));
+		}
         }
     }
     if ( $params->{TIMING} ) {
