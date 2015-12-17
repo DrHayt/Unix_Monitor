@@ -23,7 +23,9 @@ sub new(){
 sub run(){
     my $self=shift;
 
-    my %params=( 'username' => $self->{USERNAME} );
+    my %params=( 'username' => $self->{USERNAME}
+    	'applicationID' => $self->{APPLICATIONID} );
+ );
     my %params=( 'applicationID' => $self->{APPLICATIONID} );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
