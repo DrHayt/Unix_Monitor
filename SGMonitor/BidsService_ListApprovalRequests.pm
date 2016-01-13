@@ -22,7 +22,11 @@ sub new(){
 sub run(){
     my $self=shift;
 
-    my %params=( SubmissionId => '251834',
+    my %params=( 
+					SubmissionId      => '251834',
+					IncludeWorkOrder  => JSON::true,
+					includeAttributes => JSON::true
+                 
                  #LoanNumber => '1982127159',
                  #SpiPropertyId => 14508357
                  #IncludeWas => JSON::false,
