@@ -18,18 +18,19 @@ sub new(){
     $self->{SERVICE_NAME}="SPICOMPONENTTEXTSTORAGE.CARDSGET";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
+    my $START=$args->{START} || 1000;
+    my $RANGE=$args->{RANGE} || 900;
+
+    $self->{PROPERTYID}=$args->{PROPERTYID} || int(rand($self->{RANGE}))+$self->{START};
+
     return(bless($self,$class));
 }
 
 sub run(){
     my $self=shift;
-    my $start=100110;
-    my $range=30000;
-    my $propertyid=int(rand($range))+$start;
 
-    my %params=( 'PROPERTYID' => $propertyid 
+    my %params=( 'PROPERTYID' => $self->{PROPERTYID}
                 );
-                #,'IgnoreSPI' => JSON::false );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
