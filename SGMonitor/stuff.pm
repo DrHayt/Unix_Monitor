@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package SGMonitor::SPICOMPONENTTEXTSTORAGE_CARDSGET;
+package SGMonitor::SPIGlass_GetWorkOrderInfo;
 use SGMonitor::Helpers::ServiceBus;
 use Data::Dumper;
 use Sys::Hostname;
@@ -15,24 +15,20 @@ sub new(){
 
     $self->{DEBUG} = $args->{DEBUG} || 0;
 
-    $self->{SERVICE_NAME}="SPICOMPONENTTEXTSTORAGE.CARDSGET";
+    $self->{SERVICE_NAME}="SPIGlass.GetWorkOrderInfo";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
-
-    $self->{START}=$args->{START} || 1000;
-    $self->{RANGE}=$args->{RANGE} || 900;
-
-    $self->{PROPERTYID}=$args->{PROPERTYID} || undef;
 
     return(bless($self,$class));
 }
 
 sub run(){
     my $self=shift;
+    my $start=100100100;
+    my $range=30000000;
+    my $ordernumber=int(rand($range))+$start;
 
-    my $propertyid=$self->{PROPERTYID} || int(rand($self->{RANGE}))+$self->{START};
-
-    my %params=( 'PROPERTYID' => $propertyid
-                );
+    my %params=( 'OrderNumber' => $ordernumber 
+                ,'Source' => "VendorWeb" );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
 
