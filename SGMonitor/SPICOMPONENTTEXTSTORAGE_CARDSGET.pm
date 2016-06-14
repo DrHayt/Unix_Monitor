@@ -36,8 +36,6 @@ sub new(){
     push (@{$self->{SLUGS}->{DEFAULT}},3400201);
     push (@{$self->{SLUGS}->{DEFAULT}},3400202);
     push (@{$self->{SLUGS}->{DEFAULT}},3400205);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400206);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400207);
     push (@{$self->{SLUGS}->{DEFAULT}},3400210);
     push (@{$self->{SLUGS}->{DEFAULT}},3400211);
     push (@{$self->{SLUGS}->{DEFAULT}},3400219);
