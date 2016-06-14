@@ -18,8 +18,17 @@ sub new(){
     $self->{SERVICE_NAME}="SPICOMPONENTTEXTSTORAGE.CARDSGET";
     $self->{BASE_STRING}="ServiceBus.monitor." . uc($self->{SERVICE_NAME});
 
-    $self->{START}=$args->{START} || 1000;
-    $self->{RANGE}=$args->{RANGE} || 900;
+    $self->{ENVIRONMENT}=$args->{ENVIRONMENT} || "DEFAULT";
+
+    push (@{$self->{SLUGS}->{DEFAULT}},3400162);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400163);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400164);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400165);
+    push (@{$self->{SLUGS}->{DEVELOPMENT}},9436982);
+    push (@{$self->{SLUGS}->{DEVELOPMENT}},9436984);
+    push (@{$self->{SLUGS}->{DEVELOPMENT}},9436986);
+    push (@{$self->{SLUGS}->{DEVELOPMENT}},9436814);
+    push (@{$self->{SLUGS}->{DEVELOPMENT}},9436987);
 
     $self->{PROPERTYID}=$args->{PROPERTYID} || undef;
 
@@ -29,9 +38,12 @@ sub new(){
 sub run(){
     my $self=shift;
 
-    my $propertyid=$self->{PROPERTYID} || int(rand($self->{RANGE}))+$self->{START};
+    my @slugsarray=@{$self->{SLUGS}->{$SELF->{ENVIRONMENT}}};
+    my $propertyid=$self->{PROPERTYID} || $slugsarray[int(rand($#slugsarray))];
+    #my $propertyid=$self->{PROPERTYID} || int(rand($self->{RANGE}))+$self->{START};
+    
 
-    my %params=( 'PROPERTYID' => $propertyid
+    my %params=( 'PROPERTYID' => int($propertyid)
                 );
 
     my ($elapsed,$status,$extra)=$self->{SB}->call_object($self->{SERVICE_NAME},\%params);
