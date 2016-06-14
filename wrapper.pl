@@ -21,7 +21,8 @@ $params->{TIME_RANGE}=60;
 $params->{TIMING}=0;
 $params->{RUNONCE}=0;
 $params->{SYSLOG_SUCCESS}=0;
-$params->{SYSLOG}=1;
+$params->{FAILED}=0;
+$params->{SYSLOG}=0;
 $params->{STATSD}=1;
 $params->{EXTRA}=0;
 

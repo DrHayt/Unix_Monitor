@@ -21,26 +21,19 @@ sub new(){
     $self->{ENVIRONMENT}=$args->{ENVIRONMENT} || "DEFAULT";
 
     # All these are successfull
-    push (@{$self->{SLUGS}->{DEFAULT}},3400162);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400171);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400173);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400179);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400180);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400181);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400182);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400186);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400187);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400188);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400193);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400200);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400201);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400202);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400205);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400210);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400211);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400219);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400221);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400223);
+    #  For this call, the propertyid and the ordernumber are irrelevant.
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806526");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806532");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806535");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806531");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806536");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806539");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806543");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806544");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806550");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111806549");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111807549");
+    push (@{$self->{SLUGS}->{DEFAULT}},"1,1,111808549");
     # For development.
     push (@{$self->{SLUGS}->{DEVELOPMENT}},"9432370,600003210,111806526");
     push (@{$self->{SLUGS}->{DEVELOPMENT}},"9432372,600003128,111806532");
