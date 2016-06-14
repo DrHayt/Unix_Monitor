@@ -20,10 +20,30 @@ sub new(){
 
     $self->{ENVIRONMENT}=$args->{ENVIRONMENT} || "DEFAULT";
 
+    # All these are successfull
     push (@{$self->{SLUGS}->{DEFAULT}},3400162);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400163);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400164);
-    push (@{$self->{SLUGS}->{DEFAULT}},3400165);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400171);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400173);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400179);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400180);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400181);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400182);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400186);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400187);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400188);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400193);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400200);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400201);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400202);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400205);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400206);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400207);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400210);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400211);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400219);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400221);
+    push (@{$self->{SLUGS}->{DEFAULT}},3400223);
+    # For development.
     push (@{$self->{SLUGS}->{DEVELOPMENT}},9436982);
     push (@{$self->{SLUGS}->{DEVELOPMENT}},9436984);
     push (@{$self->{SLUGS}->{DEVELOPMENT}},9436986);
@@ -38,10 +58,14 @@ sub new(){
 sub run(){
     my $self=shift;
 
-    my @slugsarray=@{$self->{SLUGS}->{$SELF->{ENVIRONMENT}}};
-    my $propertyid=$self->{PROPERTYID} || $slugsarray[int(rand($#slugsarray))];
+    my @slugsarray=@{$self->{SLUGS}->{$self->{ENVIRONMENT}}};
+    my $propertyid=$self->{PROPERTYID} || $slugsarray[int(rand(scalar(@slugsarray)))];
     #my $propertyid=$self->{PROPERTYID} || int(rand($self->{RANGE}))+$self->{START};
-    
+
+    if ($self->{DEBUG}) {
+      printf("SPICOMPONENTTEXTSTORAGE_CARDSGET: I chose %s\n",$propertyid)
+    }
+
 
     my %params=( 'PROPERTYID' => int($propertyid)
                 );
@@ -50,6 +74,5 @@ sub run(){
 
     return($self->{BASE_STRING},$elapsed,$status,$extra);
 }
-
 
 1;
